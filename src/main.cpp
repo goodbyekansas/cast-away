@@ -36,14 +36,19 @@ int main(int argc, char **argv) {
     }
 
     GetTypeInfo getTypeInfo = (GetTypeInfo) dlsym(plugin, "getTypeId");
-    BaseFactory *factory = createFactory();
-    std::type_index *pluginType = (getTypeInfo());
+    if (!createFactory) {
+        std::cerr << "🐐 Plugin " << argv[1] << " does not contain a 'getTypeId' function" << std::endl;
+        return 3;
+    }
+
+    std::type_index *pluginType = getTypeInfo();
     std::cout
         << "🃏 Type for ShipFactoryBase in host and plugin are equal? "
         << (std::type_index(typeid(ShipFactoryBase)) == *pluginType ? "✅ yes" : "❌ no")
         << std::endl;
     delete pluginType;
 
+    BaseFactory *factory = createFactory();
     ShipFactoryBase *shipFactory = dynamic_cast<ShipFactoryBase*>(factory);
     if (!shipFactory) {
         std::cerr << "😭 Failed to cast factory to a ship factory when using " STDLIB "!" << std::endl;
