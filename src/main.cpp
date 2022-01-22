@@ -29,14 +29,14 @@ int main(int argc, char **argv) {
         return 2;
     }
 
-    FactoryFunction ff = (FactoryFunction) dlsym(plugin, "createFactory");
-    if (!ff) {
+    FactoryFunction createFactory = (FactoryFunction) dlsym(plugin, "createFactory");
+    if (!createFactory) {
         std::cerr << "🐐 Plugin " << argv[1] << " does not contain a 'createFactory' function" << std::endl;
         return 3;
     }
 
     GetTypeInfo getTypeInfo = (GetTypeInfo) dlsym(plugin, "getTypeId");
-    BaseFactory *factory = ff();
+    BaseFactory *factory = createFactory();
     std::type_index *pluginType = (getTypeInfo());
     std::cout
         << "🃏 Type for ShipFactoryBase in host and plugin are equal? "
