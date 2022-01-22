@@ -31,3 +31,7 @@ Running with LLVM libc++ (built with Clang):
 
 To make it clear that the compiler has nothing to do with it, we use Clang together with
 libstdc++ as well as libc++.
+
+According to [this](https://lists.llvm.org/pipermail/llvm-dev/2014-June/073465.html), the
+difference between the c++ stdlib implementations seems to be known and unlikely to
+change.
