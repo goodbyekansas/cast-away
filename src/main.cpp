@@ -2,6 +2,7 @@
 
 #include <dlfcn.h>
 #include <errno.h>
+#include <typeindex>
 
 #include "base.h"
 #include "ship.h"
@@ -11,6 +12,7 @@
 #endif
 
 typedef BaseFactory* (*FactoryFunction)();
+typedef std::type_index* (*GetTypeInfo)();
 
 int main(int argc, char **argv) {
     if (argc != 2) {
@@ -33,7 +35,13 @@ int main(int argc, char **argv) {
         return 3;
     }
 
+    GetTypeInfo getTypeInfo = (GetTypeInfo) dlsym(plugin, "getTypeId");
     BaseFactory *factory = ff();
+    std::cout
+        << "🃏 Type for ShipFactoryBase in host and plugin are equal? "
+        << (std::type_index(typeid(ShipFactoryBase)) == *(getTypeInfo()) ? "✅ yes" : "❌ no")
+        << std::endl;
+
     ShipFactoryBase *shipFactory = dynamic_cast<ShipFactoryBase*>(factory);
 
     if (!shipFactory) {
@@ -43,5 +51,6 @@ int main(int argc, char **argv) {
 
     Ship *ship = shipFactory->BuildShip();
     std::cout << "🚢 Ship type: " << ship->ShipType() << std::endl;
+    delete ship;
     return 0;
 }

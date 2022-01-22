@@ -7,8 +7,8 @@ let
 in
 {
   # libstdc++ (GNU standard library)
-  libstd = pkgs.callPackage ./package.nix { stdenv = pkgs.clangStdenv; };
+  libstd = pkgs.callPackage ./package.nix { stdenv = pkgs.clangStdenv; stdlib = "libstdc++ (GNU)"; };
 
   # libc++ (llvms standard library)
-  libcxx = pkgs.callPackage ./package.nix { stdenv = pkgs.libcxxStdenv; };
+  libcxx = pkgs.callPackage ./package.nix { stdenv = pkgs.libcxxStdenv; stdlib = "libc++ (LLVM)"; };
 }

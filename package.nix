@@ -1,4 +1,4 @@
-{ stdenv, bear, clang-tools, nix-gitignore }:
+{ stdenv, bear, clang-tools, nix-gitignore, stdlib }:
 
 stdenv.mkDerivation {
   name = "cast-away";
@@ -7,7 +7,7 @@ stdenv.mkDerivation {
 
   nativeBuildInputs = [ bear clang-tools ];
 
-  STDLIB = if stdenv.cc.cc.lib.isGNU or false then "libstdc++ (GNU)" else "libc++ (LLVM)";
+  STDLIB = stdlib;
 
   installPhase = ''
     mkdir -p $out/bin $out/lib

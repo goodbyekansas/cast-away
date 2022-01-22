@@ -22,14 +22,14 @@ clean:
 
 # This target is used outside nix
 run:
-	nix build -f ./default.nix
-
+	nix build -f ./default.nix libstd
 	@echo "Running with GNU libstdc++ (built with Clang):"
 	@echo ""
 	@./result/bin/cast-away ./result/lib/sloop.so 2>&1 | sed "s/^/  🐄 [libstdc++] /"
 	@echo ""
 
+	nix build -f ./default.nix libcxx
 	@echo "Running with LLVM libc++ (built with Clang):"
 	@echo ""
-	@./result-1/bin/cast-away ./result-1/lib/sloop.so 2>&1 | sed "s/^/  🐉 [libc++] /"
+	@./result/bin/cast-away ./result/lib/sloop.so 2>&1 | sed "s/^/  🐉 [libc++] /"
 	@echo ""
