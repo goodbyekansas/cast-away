@@ -3,18 +3,20 @@
 #include "base.h"
 
 #include <iostream>
+#include <typeindex>
 
 std::string Sloop::ShipType() const
 {
     return "⛵";
 }
 
-BaseFactory *createFactory()
+// Plugin interface
+extern "C" BaseFactory *createFactory()
 {
     return new ShipFactory<Sloop>();
 }
 
-const std::type_index *getTypeId()
+extern "C" const std::type_index *getTypeId()
 {
     return new std::type_index(typeid(ShipFactoryBase));
 }

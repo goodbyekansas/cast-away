@@ -22,7 +22,6 @@ int main(int argc, char **argv) {
 
     std::cout << "Casting away 🏝 using C++ standard library \"" STDLIB "\"... 🚢" << std::endl;
 
-
     void *plugin = dlopen(argv[1], RTLD_NOW);
     if (plugin == nullptr) {
         std::cerr << "💣 Failed to load plugin " << argv[1] << ": " << dlerror() << std::endl;
@@ -35,13 +34,13 @@ int main(int argc, char **argv) {
         return 3;
     }
 
-    GetTypeInfo getTypeInfo = (GetTypeInfo) dlsym(plugin, "getTypeId");
-    if (!createFactory) {
+    GetTypeInfo getTypeId = (GetTypeInfo) dlsym(plugin, "getTypeId");
+    if (!getTypeId) {
         std::cerr << "🐐 Plugin " << argv[1] << " does not contain a 'getTypeId' function" << std::endl;
         return 3;
     }
 
-    std::type_index *pluginType = getTypeInfo();
+    std::type_index *pluginType = getTypeId();
     std::cout
         << "🃏 Type for ShipFactoryBase in host and plugin are equal? "
         << (std::type_index(typeid(ShipFactoryBase)) == *pluginType ? "✅ yes" : "❌ no")

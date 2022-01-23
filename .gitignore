@@ -8,6 +8,9 @@ compile_commands.json
 # nix
 /result*
 
+# direnv
+/.direnv/
+
 # Prerequisites
 *.d
 
