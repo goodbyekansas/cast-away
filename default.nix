@@ -12,6 +12,13 @@ let
       });
     });
   }).libcxxClang;
+
+  libcxxStdenvWithDebug = pkgs.overrideCC pkgs.llvmPackages_11.libcxxStdenv (pkgs.llvmPackages_11.override {
+    targetLlvmLibraries = (pkgs.llvmPackages_11.libraries // {
+      libcxxabi = pkgs.enableDebugging pkgs.llvmPackages_11.libraries.libcxxabi;
+    });
+  }).libcxxClang;
+
 in
 {
   # libstdc++ (GNU standard library)
@@ -22,4 +29,6 @@ in
 
   # libc++ (llvms standard library with a strcmp fallback)
   libcxxStrcmp = pkgs.callPackage ./package.nix { stdenv = libcxxStdenvWithStrcmp; stdlib = "libc++ w/ strcmp (LLVM)"; };
+
+  libcxxDebug = pkgs.callPackage ./package.nix { stdenv = libcxxStdenvWithDebug; stdlib = "libc++ (LLVM)"; enableDebug = true; };
 }
