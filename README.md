@@ -27,6 +27,13 @@ Running with LLVM libc++ (built with Clang):
   🐉 [libc++] Casting away 🏝 using C++ standard library "libc++ (LLVM)"... 🚢
   🐉 [libc++] 🃏 Type for ShipFactoryBase in host and plugin are equal? ❌ no
   🐉 [libc++] 😭 Failed to cast factory to a ship factory when using libc++ (LLVM)!
+
+nix build -f ./default.nix libcxxStrcmp
+Running with LLVM libc++ (built with Clang, using strcmp fallback through _LIBCXX_DYNAMIC_FALLBACK):
+
+  🐉 [libc++ (strcmp)] Casting away 🏝 using C++ standard library "libc++ w/ strcmp (LLVM)"... 🚢
+  🐉 [libc++ (strcmp)] 🃏 Type for ShipFactoryBase in host and plugin are equal? ❌ no
+  🐉 [libc++ (strcmp)] 🚢 Ship type: ⛵
 ```
 
 To make it clear that the compiler has nothing to do with it, we use Clang together with
