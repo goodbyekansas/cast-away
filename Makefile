@@ -35,7 +35,7 @@ run:
 	@echo ""
 
 	nix build -f ./default.nix libcxxStrcmp
-	@echo "Running with LLVM libc++ (built with Clang, using strcmp fallback through _LIBCXX_DYNAMIC_FALLBACK):"
+	@echo "Running with LLVM libc++ (built with Clang, using strcmp fallback through _LIBCXXABI_FORGIVING_DYNAMIC_CAST):"
 	@echo ""
 	@./result/bin/cast-away ./result/lib/sloop.so 2>&1 | sed "s/^/  🐉 [libc++ (strcmp)] /"
 	@echo ""
