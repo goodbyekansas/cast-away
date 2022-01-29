@@ -1,7 +1,7 @@
 MAIN_SRCS := src/main.cpp src/base.cpp src/ship.cpp
 MAIN_OBJS := $(patsubst %.cpp,%.o,$(MAIN_SRCS))
 
-SLOOP_SRCS := src/sloop.cpp src/base.cpp src/ship.cpp
+SLOOP_SRCS := src/sloop.cpp
 SLOOP_OBJS := $(patsubst %.cpp,%.o,$(SLOOP_SRCS))
 
 .PHONY: all run clean
@@ -12,7 +12,7 @@ all: sloop.so cast-away
 	$(CXX) $(CXXFLAGS) -I ./src/ -DSTDLIB="\"$(STDLIB)\"" -c $< -o $@
 
 cast-away: $(MAIN_OBJS)
-	$(CXX) $(LDFLAGS) $(MAIN_OBJS) -ldl -o cast-away
+	$(CXX) $(LDFLAGS) $(MAIN_OBJS) -Wl,--export-dynamic -ldl -o cast-away
 
 sloop.so: $(SLOOP_OBJS)
 	$(CXX) $(LDFLAGS) $(SLOOP_OBJS) -o sloop.so -shared
