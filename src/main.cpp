@@ -1,18 +1,10 @@
 #include <iostream>
 
-#include <dlfcn.h>
-#include <errno.h>
-#include <typeindex>
-
-#include "base.h"
-#include "ship.h"
+#include "loader.h"
 
 #if not defined(STDLIB)
 #define STDLIB "unknown"
 #endif
-
-typedef BaseFactory* (*FactoryFunction)();
-typedef std::type_index* (*GetTypeInfo)();
 
 int main(int argc, char **argv) {
     if (argc != 2) {
@@ -22,41 +14,8 @@ int main(int argc, char **argv) {
 
     std::cout << "Casting away 🏝 using C++ standard library \"" STDLIB "\"... 🚢" << std::endl;
 
-    void *plugin = dlopen(argv[1], RTLD_NOW);
-    if (plugin == nullptr) {
-        std::cerr << "💣 Failed to load plugin " << argv[1] << ": " << dlerror() << std::endl;
-        return 2;
+    if (load_plugin(argv[1]) != 0) {
+        return 1;
     }
-
-    FactoryFunction createFactory = (FactoryFunction) dlsym(plugin, "createFactory");
-    if (!createFactory) {
-        std::cerr << "🐐 Plugin " << argv[1] << " does not contain a 'createFactory' function" << std::endl;
-        return 3;
-    }
-
-    GetTypeInfo getTypeId = (GetTypeInfo) dlsym(plugin, "getTypeId");
-    if (!getTypeId) {
-        std::cerr << "🐐 Plugin " << argv[1] << " does not contain a 'getTypeId' function" << std::endl;
-        return 3;
-    }
-
-    std::type_index *pluginType = getTypeId();
-    std::cout
-        << "🃏 Type for ShipFactoryBase in host and plugin are equal? "
-        << (std::type_index(typeid(ShipFactoryBase)) == *pluginType ? "✅ yes" : "❌ no")
-        << std::endl;
-    delete pluginType;
-
-    BaseFactory *factory = createFactory();
-    ShipFactoryBase *shipFactory = dynamic_cast<ShipFactoryBase*>(factory);
-    if (!shipFactory) {
-        std::cerr << "😭 Failed to cast factory to a ship factory when using " STDLIB "!" << std::endl;
-        return 4;
-    }
-
-    Ship *ship = shipFactory->BuildShip();
-    std::cout << "🚢 Ship type: " << ship->ShipType() << std::endl;
-    delete ship;
-
     return 0;
 }

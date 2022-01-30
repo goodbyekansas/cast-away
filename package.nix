@@ -14,8 +14,14 @@ stdenv.mkDerivation {
 
   installPhase = ''
     mkdir -p $out/bin $out/lib
+
     cp ./cast-away $out/bin
+    patchelf --add-rpath "$out/lib" $out/bin/cast-away
+
     cp ./sloop.so $out/lib
+    patchelf --add-rpath "$out/lib" $out/lib/sloop.so
+
+    cp ./libshiploader.so $out/lib
   '';
 
   shellHook = ''
@@ -35,5 +41,7 @@ stdenv.mkDerivation {
       build
       gdb --args ./cast-away ./sloop.so
     }
+
+    export LD_LIBRARY_PATH=''${PWD}:''${LD_LIBRARY_PATH:-}
   '';
 }
