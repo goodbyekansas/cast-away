@@ -7,7 +7,9 @@ and the plugin by GNU `libstdc++` which uses `strcmp` for type equality. LLVM's
 `libc++` on the other hand uses a more sophisticated type equality check and therefore
 considers `ShipFactoryBase` to be different in the plugin and main program, resulting in a
 `dynamic_cast` between types to return `NULL`. A `static_cast`, `reinterpret_cast` or a
-C-style cast will work.
+C-style cast will work. The issue here seems to be that `libloader.so` is built with
+hidden visibility and `ShipFactoryBase` is lacking an api export directive. If that is
+added, things will work fine.
 
 Running the example here (having [Nix](https://nixos.org/download.html) installed) should
 give this output:
