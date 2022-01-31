@@ -3,7 +3,9 @@
 
 #include <string>
 
-class Ship {
+#include "base.h"
+
+class SHIP_API Ship {
  public:
     virtual ~Ship();
     virtual std::string ShipType() const = 0;

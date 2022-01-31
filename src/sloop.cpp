@@ -11,12 +11,12 @@ std::string Sloop::ShipType() const
 }
 
 // Plugin interface
-extern "C" BaseFactory *createFactory()
+SHIP_API extern "C" BaseFactory *createFactory()
 {
     return new ShipFactory<Sloop>();
 }
 
-extern "C" const std::type_index *getTypeId()
+SHIP_API extern "C" const std::type_index *getTypeId()
 {
     return new std::type_index(typeid(ShipFactoryBase));
 }

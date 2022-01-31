@@ -5,7 +5,7 @@
 
 class BaseFactory;
 
-class Sloop : public Ship {
+class SHIP_API Sloop : public Ship {
 public:
   std::string ShipType() const;
 };

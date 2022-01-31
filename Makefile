@@ -12,7 +12,7 @@ SLOOP_OBJS := $(patsubst %.cpp,%.o,$(SLOOP_SRCS))
 all: libshiploader.so sloop.so cast-away
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -I ./src/ -DSTDLIB="\"$(STDLIB)\"" -c $< -o $@
+	$(CXX) $(CXXFLAGS) -fvisibility=hidden -I ./src/ -DSTDLIB="\"$(STDLIB)\"" -c $< -o $@
 
 libshiploader.so: $(LOADER_OBJS)
 	$(CXX) $(LDFLAGS) $(LOADER_OBJS) -o libshiploader.so -shared
